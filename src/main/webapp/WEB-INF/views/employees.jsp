@@ -42,6 +42,7 @@
             <th>Country</th>
             <th>Birth Date</th>
             <th>Marital Status</th>
+            <th>Skills</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -53,6 +54,11 @@
                 <td>${employee.country}</td>
                 <td><fmt:formatDate pattern="dd-MM-yyyy" value="${employee.birthDate}"/></td>
                 <td>${employee.maritalStatus.status}</td>
+                <td>
+                    <c:forEach var="skill" items="${employee.skills}" varStatus="loopStatus">
+                        <span>${skill.name}${ not loopStatus.last ? ', ':''}</span>
+                    </c:forEach>
+                </td>
                 <td>
                     <c:url var="updateUrl" value="/upsert">
                         <c:param name="employeeId" value="${employee.employeeId}"/>

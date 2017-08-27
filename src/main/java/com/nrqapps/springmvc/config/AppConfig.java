@@ -1,10 +1,13 @@
 package com.nrqapps.springmvc.config;
 
+import com.nrqapps.springmvc.converters.SkillsConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -59,5 +62,12 @@ public class AppConfig extends WebMvcConfigurerAdapter{
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("messages");
         return messageSource;
+    }
+
+
+    @Autowired
+    public void addConverters(FormatterRegistry registry) {
+        registry.addConverter(new SkillsConverter());
+        super.addFormatters(registry);
     }
 }

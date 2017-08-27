@@ -16,7 +16,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 /**
- * Created by mauricio on 8/21/17.
+ * Created by Mauricio Enriquez on 8/21/17.
  * NrqApps © 2017
  */
 public abstract class AbstractDao<PK extends Serializable, T> implements InitializingBean, DisposableBean {

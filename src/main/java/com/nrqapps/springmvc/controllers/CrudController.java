@@ -3,6 +3,7 @@ package com.nrqapps.springmvc.controllers;
 import com.nrqapps.springmvc.models.Employee;
 import com.nrqapps.springmvc.service.EmployeeService;
 import com.nrqapps.springmvc.service.MaritalStatusService;
+import com.nrqapps.springmvc.service.SkillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -12,10 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
- * Created by mauricio on 8/21/17.
+ * Created by Mauricio Enriquez on 8/21/17.
  * NrqApps © 2017
  */
 @Controller
@@ -23,7 +23,7 @@ public class CrudController {
 
     private EmployeeService employeeService;
     private MaritalStatusService maritalStatusService;
-
+    private SkillService skillService;
 
     @InitBinder
     public void dataBinding(WebDataBinder binder) {
@@ -44,20 +44,27 @@ public class CrudController {
         if( employeeId != null ) {
             employee = employeeService.findOne(employeeId);
         }
-        List maritalStatusList = maritalStatusService.findAll();
+
+        if (employee == null ){
+            // employee doesn't exist, redirect to /upsert in order to remove employeeId from url
+            return "redirect:/upsert";
+        }
 
         modelMap.addAttribute("employee", employee);
-        modelMap.addAttribute("maritalStatusList", maritalStatusList);
+        String employeeSkills = employee.getSkills() != null ? employee.getSkills().toString() : "[]";
+        modelMap.addAttribute("employeeSkills", employeeSkills);
+        modelMap.addAttribute("maritalStatusList", maritalStatusService.findAll());
+        modelMap.addAttribute("skills", skillService.findAll());
         return "upsert";
     }
 
-    @RequestMapping(value = "upsert", method = RequestMethod.POST)
+    @RequestMapping(value = "/upsert", method = RequestMethod.POST)
     public String upsertEmployee(@ModelAttribute Employee employee) {
         employeeService.saveOrUpdate(employee);
         return "redirect:/";
     }
 
-    @RequestMapping(value = "delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public String deleteEmployee(@RequestParam Integer employeeId) {
         employeeService.delete(employeeId);
         return "redirect:/";
@@ -71,5 +78,10 @@ public class CrudController {
     @Autowired
     public void setMaritalStatusService(MaritalStatusService maritalStatusService) {
         this.maritalStatusService = maritalStatusService;
+    }
+
+    @Autowired
+    public void setSkillService(SkillService skillService) {
+        this.skillService = skillService;
     }
 }

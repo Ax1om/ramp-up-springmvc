@@ -2,7 +2,8 @@
 <html>
     <head>
         <title>Employees CRUD</title>
-        <link type="text/css" rel="stylesheet" href="<c:url value='/static/css/main.css' />" >
+        <c:url var="mainCssUrl" value='/static/css/main.css' />
+        <link type="text/css" rel="stylesheet" href="${mainCssUrl}" >
     </head>
     <body>
         <div class="container">
