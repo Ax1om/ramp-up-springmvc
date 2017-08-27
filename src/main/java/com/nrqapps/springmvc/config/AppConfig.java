@@ -18,6 +18,20 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan(basePackages = "com.nrqapps.springmvc")
 public class AppConfig extends WebMvcConfigurerAdapter{
 
+
+    /**
+     * Configure ViewResolvers to deliver preferred views overriding the method of WebMvcConfigurerAdapter
+        @Override
+        public void configureViewResolvers(ViewResolverRegistry registry) {
+
+            InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+            viewResolver.setViewClass(JstlView.class);
+            viewResolver.setPrefix("/WEB-INF/views/");
+            viewResolver.setSuffix(".jsp");
+            registry.viewResolver(viewResolver);
+        }
+     */
+
     // Best method to configure view resolver as the IDE will recognize the views used on the controllers
     @Bean
     public ViewResolver viewResolver(){
