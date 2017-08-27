@@ -1,6 +1,9 @@
 package com.nrqapps.springmvc.models;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -19,15 +22,18 @@ public class Employee implements Serializable {
     private Integer employeeId;
 
     @Column
+    @NotEmpty
     private String name;
 
     @Column
+    @NotEmpty
     private String surname;
 
     @Column
     private String country;
 
     @Column(name = "birth_date")
+    @NotNull
     private Date birthDate;
 
     @ManyToOne
