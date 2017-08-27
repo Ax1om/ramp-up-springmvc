@@ -4,6 +4,7 @@ import com.nrqapps.springmvc.dao.EmployeeDao;
 import com.nrqapps.springmvc.models.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.io.Serializable;
@@ -22,8 +23,11 @@ public class EmployeeService implements Serializable {
         return employeeDao.findOne(employeeId);
     }
 
-    public List findAll() {
-        return employeeDao.findAll();
+    public List findByQuery(String query) {
+        if(StringUtils.isEmpty(query)){
+            return employeeDao.findAll();
+        }
+        return employeeDao.findByQuery(query);
     }
 
     public void saveOrUpdate (Employee employee) {

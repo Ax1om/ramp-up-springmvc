@@ -33,8 +33,8 @@ public class CrudController {
     }
 
     @RequestMapping(value = { "", "/" }, method = RequestMethod.GET)
-    public String homePage(ModelMap modelMap){
-        modelMap.addAttribute("employees", employeeService.findAll());
+    public String homePage(ModelMap modelMap, @RequestParam(required = false) String query){
+        modelMap.addAttribute("employees", employeeService.findByQuery(query));
         return "employees";
     }
 

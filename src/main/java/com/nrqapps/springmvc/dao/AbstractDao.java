@@ -42,7 +42,7 @@ public abstract class AbstractDao<PK extends Serializable, T> implements Initial
         this.rootEntity = criteriaQuery.from(persistentClass);
     }
 
-    private Session getSession() {
+    Session getSession() {
         try {
             session = sessionFactory.getCurrentSession();
         } catch (HibernateException e) {
@@ -58,10 +58,12 @@ public abstract class AbstractDao<PK extends Serializable, T> implements Initial
 
     public List findAll() {
         return
-            getSession().createQuery(
-                criteriaQuery
-                        .select(rootEntity)
-            ).getResultList();
+                getSession().createQuery(
+                        criteriaQuery
+                            .select(rootEntity)
+                            // we use empty where in order to delete predicates because we use the same criteria for filtering
+                            .where()
+                ).getResultList();
     }
 
     public void persist(T entity) {
@@ -90,7 +92,7 @@ public abstract class AbstractDao<PK extends Serializable, T> implements Initial
         session.close();
     }
 
-    private CriteriaBuilder getCriteriaBuilder() {
+    CriteriaBuilder getCriteriaBuilder() {
         return criteriaBuilder;
     }
 
@@ -98,11 +100,11 @@ public abstract class AbstractDao<PK extends Serializable, T> implements Initial
         return sessionFactory;
     }
 
-    private CriteriaQuery<T> getCriteriaQuery() {
+    CriteriaQuery<T> getCriteriaQuery() {
         return criteriaQuery;
     }
 
-    private Root<T> getRootEntity() {
+    Root<T> getRootEntity() {
         return rootEntity;
     }
 }
