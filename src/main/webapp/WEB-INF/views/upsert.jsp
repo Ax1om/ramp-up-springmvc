@@ -23,6 +23,10 @@
                 <span class="upsert__label-text">Birth Date:</span>
                 <form:input cssClass="upsert__input" path="birthDate" type="date" placeholder="Birth Date" />
             </label>
+            <label class="upsert__label">
+                <span class="upsert__label-text">Marital Status:</span>
+                <form:select cssClass="upsert__input" path="maritalStatus.maritalStatusId" items="${maritalStatusList}" itemValue="maritalStatusId" itemLabel="status" />
+            </label>
             <div class="upsert__buttons-container">
                 <input class="link-as-button" type="submit" value="Save">
                 <a href="<c:url value="/"/>" class="link-as-button">Cancel</a>

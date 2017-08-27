@@ -2,6 +2,7 @@ package com.nrqapps.springmvc.controllers;
 
 import com.nrqapps.springmvc.models.Employee;
 import com.nrqapps.springmvc.service.EmployeeService;
+import com.nrqapps.springmvc.service.MaritalStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by mauricio on 8/21/17.
@@ -20,6 +22,8 @@ import java.util.Date;
 public class CrudController {
 
     private EmployeeService employeeService;
+    private MaritalStatusService maritalStatusService;
+
 
     @InitBinder
     public void dataBinding(WebDataBinder binder) {
@@ -40,7 +44,10 @@ public class CrudController {
         if( employeeId != null ) {
             employee = employeeService.findOne(employeeId);
         }
+        List maritalStatusList = maritalStatusService.findAll();
+
         modelMap.addAttribute("employee", employee);
+        modelMap.addAttribute("maritalStatusList", maritalStatusList);
         return "upsert";
     }
 
@@ -59,5 +66,10 @@ public class CrudController {
     @Autowired
     public void setEmployeeService(EmployeeService employeeService) {
         this.employeeService = employeeService;
+    }
+
+    @Autowired
+    public void setMaritalStatusService(MaritalStatusService maritalStatusService) {
+        this.maritalStatusService = maritalStatusService;
     }
 }

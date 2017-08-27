@@ -24,6 +24,7 @@
             <th>Surname</th>
             <th>Country</th>
             <th>Birth Date</th>
+            <th>Marital Status</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -34,6 +35,7 @@
                 <td>${employee.surname}</td>
                 <td>${employee.country}</td>
                 <td><fmt:formatDate pattern="dd-MM-yyyy" value="${employee.birthDate}"/></td>
+                <td>${employee.maritalStatus.status}</td>
                 <td>
                     <c:url var="updateUrl" value="/upsert">
                         <c:param name="employeeId" value="${employee.employeeId}"/>

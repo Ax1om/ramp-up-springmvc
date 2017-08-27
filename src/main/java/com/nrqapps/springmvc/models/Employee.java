@@ -26,8 +26,12 @@ public class Employee implements Serializable {
     @Column
     private String country;
 
-    @Column(name = "brith_date")
+    @Column(name = "birth_date")
     private Date birthDate;
+
+    @ManyToOne
+    @JoinColumn(name = "marital_status_id")
+    private MaritalStatus maritalStatus;
 
     public Integer getEmployeeId() {
         return employeeId;
@@ -67,5 +71,13 @@ public class Employee implements Serializable {
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public MaritalStatus getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(MaritalStatus maritalStatus) {
+        this.maritalStatus = maritalStatus;
     }
 }
