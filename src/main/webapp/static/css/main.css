@@ -1,5 +1,6 @@
 @import "common.css";
 
 @import "table.css";
-@import "upsert.css";
 @import "search.css";
+@import "upsert.css";
+@import "notification.css";

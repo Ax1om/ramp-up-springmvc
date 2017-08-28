@@ -1,6 +1,7 @@
 package com.nrqapps.springmvc.config;
 
 import com.nrqapps.springmvc.converters.SkillsConverter;
+import com.nrqapps.springmvc.service.SkillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -66,8 +67,8 @@ public class AppConfig extends WebMvcConfigurerAdapter{
 
 
     @Autowired
-    public void addConverters(FormatterRegistry registry) {
-        registry.addConverter(new SkillsConverter());
+    public void addConverters(FormatterRegistry registry, SkillService skillService) {
+        registry.addConverter(new SkillsConverter(skillService));
         super.addFormatters(registry);
     }
 }

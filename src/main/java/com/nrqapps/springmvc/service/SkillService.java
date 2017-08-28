@@ -21,6 +21,10 @@ public class SkillService implements Serializable {
         return skillDao.findAll();
     }
 
+    public List findAllIn(List skillIdList) {
+        return skillDao.findAllIn(skillIdList);
+    }
+
     @Autowired
     public void setSkillDao(SkillDao skillDao) {
         this.skillDao = skillDao;

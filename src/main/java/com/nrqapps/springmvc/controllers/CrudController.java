@@ -1,6 +1,7 @@
 package com.nrqapps.springmvc.controllers;
 
 import com.nrqapps.springmvc.models.Employee;
+import com.nrqapps.springmvc.pojos.Notification;
 import com.nrqapps.springmvc.service.EmployeeService;
 import com.nrqapps.springmvc.service.MaritalStatusService;
 import com.nrqapps.springmvc.service.SkillService;
@@ -12,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,7 +23,7 @@ import java.util.Date;
  * NrqApps © 2017
  */
 @Controller
-public class CrudController {
+public class CrudController extends BaseController {
 
     private EmployeeService employeeService;
     private MaritalStatusService maritalStatusService;
@@ -41,7 +43,7 @@ public class CrudController {
     }
 
     @RequestMapping(value = "/upsert", method = RequestMethod.GET)
-    public String loadUpsertPage(ModelMap modelMap, @RequestParam( required = false) Integer employeeId) {
+    public String loadUpsertPage(ModelMap modelMap, @RequestParam( required = false) Integer employeeId, HttpServletRequest request) {
         Employee employee = new Employee();
         if( employeeId != null ) {
             employee = employeeService.findOne(employeeId);
@@ -49,6 +51,7 @@ public class CrudController {
 
         if (employee == null ){
             // employee doesn't exist, redirect to /upsert in order to remove employeeId from url
+            sendUserNotification(request, new Notification(Notification.ERROR, getMessage("error.employee.notFound")));
             return "redirect:/upsert";
         }
 
@@ -56,9 +59,10 @@ public class CrudController {
     }
 
     @RequestMapping(value = "/upsert", method = RequestMethod.POST)
-    public String upsertEmployee(@ModelAttribute("employee") @Valid Employee employee, BindingResult result, ModelMap modelMap) {
+    public String upsertEmployee(@ModelAttribute("employee") @Valid Employee employee, BindingResult result, ModelMap modelMap, HttpServletRequest request) {
         if(!result.hasErrors()) {
             employeeService.saveOrUpdate(employee);
+            sendUserNotification(request, new Notification(Notification.SUCCESS, getMessage("success.employee.saved")));
             return "redirect:/";
         }
         return prepareUpsertPage(modelMap, employee);
@@ -74,8 +78,9 @@ public class CrudController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public String deleteEmployee(@RequestParam Integer employeeId) {
+    public String deleteEmployee(@RequestParam Integer employeeId, HttpServletRequest request) {
         employeeService.delete(employeeId);
+        sendUserNotification(request, new Notification(Notification.SUCCESS, getMessage("success.employee.deleted")));
         return "redirect:/";
     }
 
