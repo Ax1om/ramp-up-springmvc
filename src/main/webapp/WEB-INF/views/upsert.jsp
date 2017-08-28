@@ -7,22 +7,38 @@
     <form:form id="upsert-form" modelAttribute="employee" method="post">
         <fieldset class="upsert__fieldset">
             <legend class="upsert__legend">${not empty employee.employeeId ? 'Edit ' : 'Insert '} Employee</legend>
-            <label class="upsert__label">
+            <c:set var="nameErrorMessage">
+                <form:errors path="name" cssClass="upsert__error-message" />
+            </c:set>
+            <label class="upsert__label ${not empty nameErrorMessage ? 'upsert__label--error':''}">
                 <span class="upsert__label-text">Name:</span>
                 <form:input cssClass="upsert__input" path="name" type="text" placeholder="Name" />
             </label>
-            <label class="upsert__label">
+            ${nameErrorMessage}
+
+            <c:set var="surnameErrorMessage">
+                <form:errors path="surname" cssClass="upsert__error-message" />
+            </c:set>
+            <label class="upsert__label ${not empty surnameErrorMessage ? 'upsert__label--error':''}">
                 <span class="upsert__label-text">Surname:</span>
                 <form:input cssClass="upsert__input" path="surname" type="text" placeholder="Surname" />
             </label>
+            ${surnameErrorMessage}
+
             <label class="upsert__label">
                 <span class="upsert__label-text">Country:</span>
                 <form:input cssClass="upsert__input" path="country" type="text" placeholder="Country" />
             </label>
-            <label class="upsert__label">
+
+            <c:set var="birthDateErrorMessage">
+                <form:errors path="birthDate" cssClass="upsert__error-message" />
+            </c:set>
+            <label class="upsert__label ${not empty birthDateErrorMessage ? 'upsert__label--error':''}">
                 <span class="upsert__label-text">Birth Date:</span>
-                <form:input cssClass="upsert__input" path="birthDate" type="date" placeholder="Birth Date" />
+                <form:input cssClass="upsert__input" path="birthDate" type="date" placeholder="yyyy-MM-dd" />
             </label>
+            ${birthDateErrorMessage}
+
             <label class="upsert__label">
                 <span class="upsert__label-text">Marital Status:</span>
                 <form:select cssClass="upsert__input" path="maritalStatus.maritalStatusId" items="${maritalStatusList}" itemValue="maritalStatusId" itemLabel="status" />

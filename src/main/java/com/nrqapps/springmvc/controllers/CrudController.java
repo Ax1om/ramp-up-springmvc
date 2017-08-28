@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -50,18 +52,25 @@ public class CrudController {
             return "redirect:/upsert";
         }
 
+        return prepareUpsertPage(modelMap, employee);
+    }
+
+    @RequestMapping(value = "/upsert", method = RequestMethod.POST)
+    public String upsertEmployee(@ModelAttribute("employee") @Valid Employee employee, BindingResult result, ModelMap modelMap) {
+        if(!result.hasErrors()) {
+            employeeService.saveOrUpdate(employee);
+            return "redirect:/";
+        }
+        return prepareUpsertPage(modelMap, employee);
+    }
+
+    private String prepareUpsertPage(ModelMap modelMap, Employee employee){
         modelMap.addAttribute("employee", employee);
         String employeeSkills = employee.getSkills() != null ? employee.getSkills().toString() : "[]";
         modelMap.addAttribute("employeeSkills", employeeSkills);
         modelMap.addAttribute("maritalStatusList", maritalStatusService.findAll());
         modelMap.addAttribute("skills", skillService.findAll());
         return "upsert";
-    }
-
-    @RequestMapping(value = "/upsert", method = RequestMethod.POST)
-    public String upsertEmployee(@ModelAttribute Employee employee) {
-        employeeService.saveOrUpdate(employee);
-        return "redirect:/";
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
