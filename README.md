@@ -18,12 +18,12 @@ Exercises
 
  - Checkout project
  - Navigate with the terminal to the project directory
- - run : 
+ - if it is the first time running the app, you need to exec this maven task: 
     ```
-    mvn exec:exec@run-server
+    mvn exec:exec@install
     ```
- - if is the first time running up the app, once the app is up run: 
+ - start server 
     ```
-    mvn exec:exec@populate-db 
+    mvn tomcat7:run-war
     ```
     
